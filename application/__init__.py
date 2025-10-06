@@ -3,14 +3,14 @@ from __future__ import annotations
 import os
 from flask import Flask, jsonify
 
-from .extensions import db, ma
+from .extensions import db, ma, limiter, cache
 from . import models  # ensure models are imported so tables are known
 
-# 🔽 These three imports MUST be at module scope (not inside create_app)
+# 🔽 These imports MUST be at module scope (not inside create_app)
 from .blueprints.mechanics import mechanics_bp
 from .blueprints.service_tickets import service_tickets_bp
-# (Customers from A4 is optional; if you have it:)
-# from .blueprints.customers import customers_bp
+from .blueprints.customers import customers_bp  # Added for Assignment 7
+from .blueprints.inventory import inventory_bp  # Added for Assignment 10
 
 def create_app(config_name: str | None = None) -> Flask:
     app = Flask(__name__)
@@ -25,18 +25,18 @@ def create_app(config_name: str | None = None) -> Flask:
 
     db.init_app(app)
     ma.init_app(app)
+    limiter.init_app(app)
+    cache.init_app(app)
 
     @app.get("/health")
     def health():
         return jsonify({"status": "ok"})
 
     # 🔽 Blueprints MUST be registered inside create_app
-    # try:
-    #     app.register_blueprint(customers_bp, url_prefix="/customers")
-    # except Exception:
-    #     pass
+    app.register_blueprint(customers_bp, url_prefix="/customers")  # Added for Assignment 7
     app.register_blueprint(mechanics_bp, url_prefix="/mechanics")
     app.register_blueprint(service_tickets_bp, url_prefix="/service-tickets")
+    app.register_blueprint(inventory_bp, url_prefix="/inventory")  # Added for Assignment 10
 
     with app.app_context():
         db.create_all()

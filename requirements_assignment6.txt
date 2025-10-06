@@ -1,0 +1,20 @@
+# Assignment 6 Requirements - Rate Limiting and Caching
+# Includes all previous requirements plus Assignment 6 additions
+
+# Core Flask dependencies (from previous assignments)
+Flask
+Flask-SQLAlchemy
+SQLAlchemy
+mysql-connector-python
+python-dotenv
+flask-marshmallow
+marshmallow
+marshmallow-sqlalchemy
+
+# Testing Requirements (from Assignment 4)
+pytest
+pytest-flask
+
+# Assignment 6 - Rate Limiting and Caching
+Flask-Limiter
+Flask-Caching

@@ -9,7 +9,7 @@ Purpose:
 
 Usage (Windows / PowerShell):
     1) python -m venv venv
-    2) .\venv\Scripts\activate
+    2) .\\venv\\Scripts\\activate
     3) pip install flask flask-sqlalchemy mysql-connector-python python-dotenv
     4) In MySQL Workbench:  CREATE DATABASE mechanic_shop;
     5) Create a .env file in this folder containing:

@@ -23,6 +23,7 @@ class Customer(Base):
     first_name: Mapped[str] = mapped_column(String(120), nullable=False)
     last_name: Mapped[str] = mapped_column(String(120), nullable=False)
     email: Mapped[str] = mapped_column(String(360), nullable=False, unique=True)
+    password: Mapped[str] = mapped_column(String(255), nullable=False)  # Added for Assignment 7
     phone: Mapped[Optional[str]] = mapped_column(String(40))
     address_line1: Mapped[Optional[str]] = mapped_column(String(255))
     address_line2: Mapped[Optional[str]] = mapped_column(String(255))
@@ -103,6 +104,10 @@ class ServiceTicket(Base):
     mechanics: Mapped[List["Mechanic"]] = relationship(
         secondary="ticket_mechanics", back_populates="tickets", viewonly=True
     )
+    inventory_assignments: Mapped[List["ServiceInventory"]] = relationship(back_populates="ticket", cascade="all, delete-orphan")
+    inventory_parts: Mapped[List["Inventory"]] = relationship(
+        secondary="service_inventory", back_populates="tickets", viewonly=True
+    )
 
 
 # ---- Services Table ----
@@ -156,3 +161,32 @@ class TicketMechanic(Base):
 
     ticket: Mapped["ServiceTicket"] = relationship(back_populates="assignments")
     mechanic: Mapped["Mechanic"] = relationship(back_populates="assignments")
+
+
+# ---- Inventory Table ----
+class Inventory(Base):
+    __tablename__ = "inventory"
+    __table_args__ = (
+        UniqueConstraint("name", name="uq_inventory_name"),
+        CheckConstraint("price >= 0", name="ck_inventory_price_nonneg"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(160), nullable=False)
+    price: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False)
+
+    # Relationships
+    tickets: Mapped[List["ServiceTicket"]] = relationship(
+        secondary="service_inventory", back_populates="inventory_parts", viewonly=True
+    )
+
+
+# ---- Service Ticket ↔ Inventory Junction Table ----
+class ServiceInventory(Base):
+    __tablename__ = "service_inventory"
+
+    ticket_id: Mapped[int] = mapped_column(ForeignKey("service_tickets.ticket_id", ondelete="CASCADE"), primary_key=True)
+    inventory_id: Mapped[int] = mapped_column(ForeignKey("inventory.id", ondelete="RESTRICT"), primary_key=True)
+
+    ticket: Mapped["ServiceTicket"] = relationship(back_populates="inventory_assignments")
+    inventory: Mapped["Inventory"] = relationship()

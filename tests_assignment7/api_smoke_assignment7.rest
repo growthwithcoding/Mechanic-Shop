@@ -1,0 +1,325 @@
+### Assignment 7: Token Authentication API Tests
+### VS Code REST Client Extension Tests
+### Install: "REST Client" extension by Huachao Mao
+
+@baseUrl = http://localhost:5000
+@contentType = application/json
+
+### Variables for reuse
+# Will be set after registration and login
+@customerId = 1
+@authToken = your_token_here
+
+###############################################################################
+### 1. Health Check (No Auth Required)
+###############################################################################
+
+GET {{baseUrl}}/health
+Accept: application/json
+
+###############################################################################
+### 2. REGISTER - Create New Customer Account
+###############################################################################
+
+# @name register
+POST {{baseUrl}}/customers/register
+Content-Type: {{contentType}}
+
+{
+  "first_name": "Alice",
+  "last_name": "Johnson",
+  "email": "alice.johnson@example.com",
+  "password": "securepass123",
+  "phone": "555-1001",
+  "address_line1": "123 Main St",
+  "city": "Springfield",
+  "state": "IL",
+  "postal_code": "62701"
+}
+
+###
+# Expected: 201 Created
+# Response includes customer data (without password)
+
+###############################################################################
+### 3. LOGIN - Get Authentication Token
+###############################################################################
+
+# @name login
+POST {{baseUrl}}/customers/login
+Content-Type: {{contentType}}
+
+{
+  "email": "alice.johnson@example.com",
+  "password": "securepass123"
+}
+
+###
+# Expected: 200 OK
+# Response includes: status, message, auth_token, customer
+# COPY the auth_token value and paste it into @authToken variable above
+
+###############################################################################
+### 4. LOGIN - Invalid Credentials (Should Fail)
+###############################################################################
+
+POST {{baseUrl}}/customers/login
+Content-Type: {{contentType}}
+
+{
+  "email": "alice.johnson@example.com",
+  "password": "wrongpassword"
+}
+
+###
+# Expected: 401 Unauthorized
+# Message: "Invalid email or password"
+
+###############################################################################
+### 5. GET MY PROFILE - Token Required
+###############################################################################
+
+GET {{baseUrl}}/customers/profile
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+###
+# Expected: 200 OK
+# Returns customer profile (without password)
+
+###############################################################################
+### 6. GET MY PROFILE - Missing Token (Should Fail)
+###############################################################################
+
+GET {{baseUrl}}/customers/profile
+Accept: application/json
+
+###
+# Expected: 401 Unauthorized
+# Message: "Token is missing!"
+
+###############################################################################
+### 7. GET MY PROFILE - Invalid Token (Should Fail)
+###############################################################################
+
+GET {{baseUrl}}/customers/profile
+Authorization: Bearer invalid_token_xyz123
+Accept: application/json
+
+###
+# Expected: 401 Unauthorized
+# Message: "Invalid token!"
+
+###############################################################################
+### 8. GET MY TICKETS - Token Required
+###############################################################################
+
+GET {{baseUrl}}/customers/my-tickets
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+###
+# Expected: 200 OK
+# Returns: customer_id, ticket_count, tickets array
+# (May be empty if no tickets exist)
+
+###############################################################################
+### 9. UPDATE MY PROFILE - Token Required
+###############################################################################
+
+PUT {{baseUrl}}/customers/profile
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+  "first_name": "Alice",
+  "last_name": "Johnson-Smith",
+  "phone": "555-1002",
+  "city": "Chicago"
+}
+
+###
+# Expected: 200 OK
+# Response includes updated customer data
+
+###############################################################################
+### 10. GET ALL CUSTOMERS - Public Admin Endpoint
+###############################################################################
+
+GET {{baseUrl}}/customers/
+Accept: application/json
+
+###
+# Expected: 200 OK
+# Returns array of all customers (without passwords)
+
+###############################################################################
+### 11. GET SPECIFIC CUSTOMER - Public Admin Endpoint
+###############################################################################
+
+GET {{baseUrl}}/customers/{{customerId}}
+Accept: application/json
+
+###
+# Expected: 200 OK
+# Returns specific customer data (without password)
+
+###############################################################################
+### 12. REGISTER - Duplicate Email (Should Fail)
+###############################################################################
+
+POST {{baseUrl}}/customers/register
+Content-Type: {{contentType}}
+
+{
+  "first_name": "Bob",
+  "last_name": "Smith",
+  "email": "alice.johnson@example.com",
+  "password": "password123"
+}
+
+###
+# Expected: 409 Conflict
+# Message: "Email already registered"
+
+###############################################################################
+### 13. REGISTER - Invalid Email (Should Fail)
+###############################################################################
+
+POST {{baseUrl}}/customers/register
+Content-Type: {{contentType}}
+
+{
+  "first_name": "Charlie",
+  "last_name": "Brown",
+  "email": "not-an-email",
+  "password": "password123"
+}
+
+###
+# Expected: 400 Bad Request
+# Validation error for email field
+
+###############################################################################
+### 14. REGISTER - Password Too Short (Should Fail)
+###############################################################################
+
+POST {{baseUrl}}/customers/register
+Content-Type: {{contentType}}
+
+{
+  "first_name": "David",
+  "last_name": "Williams",
+  "email": "david@example.com",
+  "password": "pass"
+}
+
+###
+# Expected: 400 Bad Request
+# Validation error: password minimum 6 characters
+
+###############################################################################
+### 15. CREATE SERVICE TICKET (Integration Test)
+###############################################################################
+
+# First, ensure we have a vehicle for this customer
+# You may need to create mechanics and vehicles first
+
+POST {{baseUrl}}/service-tickets/
+Content-Type: {{contentType}}
+
+{
+  "customer_name": "Alice Johnson",
+  "customer_email": "alice.johnson@example.com",
+  "customer_phone": "555-1001",
+  "vehicle_make": "Toyota",
+  "vehicle_model": "Camry",
+  "vehicle_year": 2020,
+  "description": "Oil change needed",
+  "priority": 2
+}
+
+###
+# Expected: 201 Created
+# Now GET /customers/my-tickets should return this ticket
+
+###############################################################################
+### 16. GET MY TICKETS AGAIN - Should Include New Ticket
+###############################################################################
+
+GET {{baseUrl}}/customers/my-tickets
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+###
+# Expected: 200 OK
+# Should now include the ticket created above
+
+###############################################################################
+### 17. UPDATE PROFILE - Invalid Token (Should Fail)
+###############################################################################
+
+PUT {{baseUrl}}/customers/profile
+Authorization: Bearer expired_or_invalid_token
+Content-Type: {{contentType}}
+
+{
+  "phone": "555-9999"
+}
+
+###
+# Expected: 401 Unauthorized
+# Message: "Invalid token!"
+
+###############################################################################
+### 18. DELETE MY ACCOUNT - Token Required
+###############################################################################
+
+# WARNING: This will permanently delete the account!
+# Uncomment to test (but you'll need to recreate the account)
+
+# DELETE {{baseUrl}}/customers/profile
+# Authorization: Bearer {{authToken}}
+
+###
+# Expected: 200 OK
+# Message: "Successfully deleted account for customer {id}"
+# Note: This cascades to delete vehicles but may affect service tickets
+
+###############################################################################
+### ASSIGNMENT 7 TEST SUMMARY
+###############################################################################
+
+# Test Coverage:
+# ✅ Customer Registration (valid)
+# ✅ Customer Login (valid credentials)
+# ✅ Login failure (invalid credentials)
+# ✅ Get customer profile (authenticated)
+# ✅ Get my tickets (authenticated)
+# ✅ Update customer profile (authenticated)
+# ✅ Missing token handling
+# ✅ Invalid token handling
+# ✅ Duplicate email prevention
+# ✅ Input validation (email, password length)
+# ✅ Integration with service tickets
+# ✅ Public endpoints (list customers, get customer)
+# ✅ Delete account (authenticated)
+
+###############################################################################
+### NOTES
+###############################################################################
+
+# 1. Token Expiration: Tokens expire after 1 hour
+#    If you get "Token has expired!", login again to get a new token
+#
+# 2. Update @authToken: After logging in, copy the auth_token from the
+#    response and paste it into the @authToken variable at the top
+#
+# 3. Database State: These tests may create data in your database.
+#    You may want to clear test data between runs.
+#
+# 4. Password Security: Remember that passwords are stored in plain text
+#    in this educational implementation. In production, use bcrypt!
+#
+# 5. Rate Limiting: If you have Assignment 6's rate limiting enabled,
+#    you may hit rate limits. Wait or restart the server to reset.

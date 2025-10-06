@@ -1,5 +1,5 @@
-# Assignment 8 Requirements - Advanced Queries Utilizing SQLAlchemy Relationships
-# Includes all previous requirements
+# Assignment 7 Requirements - Token Authentication
+# Includes all previous requirements plus Assignment 7 additions
 
 # Core Flask dependencies (from previous assignments)
 Flask
@@ -21,6 +21,3 @@ Flask-Caching
 
 # Assignment 7 - Token Authentication
 python-jose[cryptography]
-
-# Assignment 8 - No new dependencies required
-# This assignment focuses on advanced SQLAlchemy queries using existing relationships
