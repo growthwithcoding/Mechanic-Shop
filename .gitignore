@@ -1,9 +1,49 @@
-.env
+# ==============================
+# Python / Flask standard ignores
+# ==============================
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*$py.class
 *.sqlite
 *.db
+instance/
 .vscode/
-.pytest_cache/
-.postman/
+.idea/
+*.log
+*.bak
+*.swp
+.env
 .env.*
+.env.local
+*.DS_Store
+
+# Virtual environment
+venv/
+ENV/
+env/
+.venv/
+pip-wheel-metadata/
+
+# Test / build
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Compiled docs / temp output
+build/
+dist/
+*.egg-info/
+
+# Editor / OS files
+Thumbs.db
+.DS_Store
+desktop.ini
