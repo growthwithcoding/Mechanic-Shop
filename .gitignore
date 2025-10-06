@@ -47,3 +47,13 @@ dist/
 Thumbs.db
 .DS_Store
 desktop.ini
+
+# ==============================
+# Postman exports
+# ==============================
+postman/
+*.postman_collection.json
+*.postman_environment.json
+*.postman_globals.json
+!postman_exports/
+!postman_exports/*.json
