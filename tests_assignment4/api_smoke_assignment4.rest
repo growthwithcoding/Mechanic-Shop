@@ -1,0 +1,35 @@
+### Health
+GET http://127.0.0.1:5000/health
+
+### List customers (expect 200)
+GET http://127.0.0.1:5000/customers
+
+### Create customer (expect 201)
+POST http://127.0.0.1:5000/customers
+Content-Type: application/json
+
+{
+  "first_name": "Casey",
+  "last_name": "Ng",
+  "email": "casey@example.com",
+  "phone": "555-201-2222",
+  "city": "Chicago"
+}
+
+### Get customer by id (replace 1 if different)
+GET http://127.0.0.1:5000/customers/1
+
+### Update customer (replace 1 if different)
+PUT http://127.0.0.1:5000/customers/1
+Content-Type: application/json
+
+{
+  "first_name": "Casey",
+  "last_name": "Ng",
+  "email": "casey@example.com",
+  "phone": "555-999-0000",
+  "city": "Evanston"
+}
+
+### Delete customer (replace 1 if different)
+DELETE http://127.0.0.1:5000/customers/1

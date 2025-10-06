@@ -1,0 +1,6 @@
+# Assignment 2 - ORM Models & DB Creation
+Flask
+Flask-SQLAlchemy
+SQLAlchemy
+mysql-connector-python
+python-dotenv

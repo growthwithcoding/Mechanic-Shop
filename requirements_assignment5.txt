@@ -1,0 +1,17 @@
+# Assignment 5 — Application Factory + Blueprints
+# Keep this file minimal and focused on new requirements for A5.
+# (Main requirements.txt contains the full superset for all assignments.)
+
+# Core (used across assignments)
+Flask
+Flask-SQLAlchemy
+SQLAlchemy
+mysql-connector-python
+python-dotenv
+flask-marshmallow
+marshmallow
+marshmallow-sqlalchemy
+
+# Testing (A4+)
+pytest
+pytest-flask

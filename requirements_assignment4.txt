@@ -1,0 +1,16 @@
+# Assignment 4 - Testing Requirements
+# Includes all dependencies from main requirements.txt plus testing tools
+
+# Core Flask dependencies (from requirements.txt)
+Flask
+Flask-SQLAlchemy
+SQLAlchemy
+mysql-connector-python
+python-dotenv
+flask-marshmallow
+marshmallow
+marshmallow-sqlalchemy
+
+# Testing dependencies
+pytest
+pytest-flask

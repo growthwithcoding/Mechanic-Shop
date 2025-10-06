@@ -1,0 +1,9 @@
+# Assignment 3 - REST API & Marshmallow Schemas
+Flask
+Flask-SQLAlchemy
+SQLAlchemy
+mysql-connector-python
+python-dotenv
+flask-marshmallow
+marshmallow
+marshmallow-sqlalchemy

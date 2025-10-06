@@ -1,0 +1,18 @@
+# Master requirements (Assignments 1–4)
+# Top-level dependencies only. Transitives (Werkzeug, Jinja2, itsdangerous, click, blinker, etc.)
+# are provided by Flask and need not be pinned here unless you want strict reproducibility.
+
+# Core Flask dependencies (from requirements.txt)
+Flask
+Flask-SQLAlchemy
+SQLAlchemy
+mysql-connector-python
+python-dotenv
+flask-marshmallow
+marshmallow
+marshmallow-sqlalchemy
+
+# Assignment 4 - Testing Requirements
+# Includes all dependencies from main requirements.txt plus testing tools
+pytest
+pytest-flask

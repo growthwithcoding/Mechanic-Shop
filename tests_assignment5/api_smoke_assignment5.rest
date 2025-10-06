@@ -1,0 +1,39 @@
+### Assignment 5 – Smoke Tests (VS Code REST Client)
+@base = http://127.0.0.1:5000
+
+### Health
+GET {{base}}/health
+
+### Mechanics - create
+POST {{base}}/mechanics
+Content-Type: application/json
+
+{
+  "full_name": "Taylor Kim",
+  "email": "taylor.kim@shop.local",
+  "salary_cents": 5500000
+}
+
+### Mechanics - list
+GET {{base}}/mechanics
+
+### Service Ticket - create
+POST {{base}}/service-tickets
+Content-Type: application/json
+
+{
+  "vehicle_id": 1,
+  "customer_id": 1,
+  "status": "OPEN",
+  "problem_description": "Rattle noise front-left",
+  "priority": 2
+}
+
+### Service Tickets - list
+GET {{base}}/service-tickets
+
+### Assign mechanic
+PUT {{base}}/service-tickets/1/assign-mechanic/1
+
+### Remove mechanic
+PUT {{base}}/service-tickets/1/remove-mechanic/1

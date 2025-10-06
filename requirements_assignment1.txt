@@ -1,0 +1,2 @@
+# Assignment 1 - ERD Design
+# No Python dependencies required (design-only)
