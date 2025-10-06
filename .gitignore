@@ -1,23 +1,59 @@
-# Byte-compiled / optimized / DLL files
+# ==============================
+# Python / Flask standard ignores
+# ==============================
 __pycache__/
 *.py[cod]
-*.class
+*.pyo
+*.pyd
+*.pdb
+*$py.class
+*.sqlite
+*.db
+instance/
+.vscode/
+.idea/
+*.log
+*.bak
+*.swp
+.env
+.env.*
+.env.local
+*.DS_Store
 
-# Distribution / packaging
+# Virtual environment
+venv/
+ENV/
+env/
+.venv/
+pip-wheel-metadata/
+
+# Test / build
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Compiled docs / temp output
 build/
 dist/
 *.egg-info/
 
-# Virtual environments
-.venv/
-venv/
-env/
-
-# OS / IDE
-.DS_Store
+# Editor / OS files
 Thumbs.db
-.vscode/
-.idea/
+.DS_Store
+desktop.ini
 
-# Secrets
-.env
+# ==============================
+# Postman exports
+# ==============================
+postman/
+*.postman_collection.json
+*.postman_environment.json
+*.postman_globals.json
+!postman_exports/
+!postman_exports/*.json

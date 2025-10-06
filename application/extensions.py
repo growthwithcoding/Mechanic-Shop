@@ -2,18 +2,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from sqlalchemy.orm import DeclarativeBase
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
-from flask_caching import Cache
 
 class Base(DeclarativeBase):
     pass
 
 db = SQLAlchemy(model_class=Base)
 ma = Marshmallow()
-
-# Flask-Limiter: Protects API from abuse by limiting request rates
-limiter = Limiter(key_func=get_remote_address)
-
-# Flask-Caching: Improves performance by caching frequently accessed data
-cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})

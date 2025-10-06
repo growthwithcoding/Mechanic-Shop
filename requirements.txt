@@ -1,7 +1,8 @@
-# Assignment 8 Requirements - Advanced Queries Utilizing SQLAlchemy Relationships
-# Includes all previous requirements
+# Master requirements (Assignments 1–4)
+# Top-level dependencies only. Transitives (Werkzeug, Jinja2, itsdangerous, click, blinker, etc.)
+# are provided by Flask and need not be pinned here unless you want strict reproducibility.
 
-# Core Flask dependencies (from previous assignments)
+# Core Flask dependencies (from requirements.txt)
 Flask
 Flask-SQLAlchemy
 SQLAlchemy
@@ -11,16 +12,7 @@ flask-marshmallow
 marshmallow
 marshmallow-sqlalchemy
 
-# Testing Requirements (from Assignment 4)
+# Assignment 4 - Testing Requirements
+# Includes all dependencies from main requirements.txt plus testing tools
 pytest
 pytest-flask
-
-# Assignment 6 - Rate Limiting and Caching
-Flask-Limiter
-Flask-Caching
-
-# Assignment 7 - Token Authentication
-python-jose[cryptography]
-
-# Assignment 8 - No new dependencies required
-# This assignment focuses on advanced SQLAlchemy queries using existing relationships
